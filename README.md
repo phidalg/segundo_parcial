@@ -1,4 +1,4 @@
-# Trabajo Práctico 8: Jakarta Persistence API
+# Segundo Parcial de Programación III
 
 <img src="LogoUTN.png" width="60" align="left" />
 
