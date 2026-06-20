@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static edu.utn.segundo_parcial.model.menu.MenuCategorias.gestionarCategorias;
+import static edu.utn.segundo_parcial.model.menu.MenuProductos.gestionarProductos;
+import static edu.utn.segundo_parcial.model.menu.MenuReportes.reportes;
 
 public abstract class MenuPrincipal extends Menu {
 
@@ -33,25 +35,22 @@ public abstract class MenuPrincipal extends Menu {
                     break;
 
                 case 2: // Gestionar Productos
-
+                    gestionarProductos();
                     break;
 
                 case 3: // Reportes
-
+                    reportes();
                     break;
-
 
                 case 4:
                     cerrar = true;
                     break;
 
                 default:
-
                     System.out.println("Error, opción invalida en switch.");
                     break;
 
             }
-
         }
     }
 }

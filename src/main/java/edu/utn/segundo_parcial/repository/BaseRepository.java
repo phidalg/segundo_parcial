@@ -42,11 +42,61 @@ public abstract class BaseRepository<T> {
             entityTransaction = entityManager.getTransaction();
             entityTransaction.begin();
 
-            T mergedEntity = entityManager.merge(entity);
+            // Manejo especial para Producto (restricción unique on nombre)
+            if (entity instanceof edu.utn.segundo_parcial.model.Producto) {
+                edu.utn.segundo_parcial.model.Producto incoming = (edu.utn.segundo_parcial.model.Producto) entity;
 
+                // Buscar por nombre
+                String jpql = "SELECT p FROM Producto p WHERE p.nombre = :nombre";
+                java.util.List<edu.utn.segundo_parcial.model.Producto> encontrados =
+                        entityManager.createQuery(jpql, edu.utn.segundo_parcial.model.Producto.class)
+                                .setParameter("nombre", incoming.getNombre())
+                                .getResultList();
+
+                if (!encontrados.isEmpty()) {
+                    edu.utn.segundo_parcial.model.Producto existente = encontrados.get(0);
+
+                    // Si el encontrado es el mismo (mismo id) permitir merge normal
+                    if (incoming.getId() == null || !incoming.getId().equals(existente.getId())) {
+                        if (!existente.isEliminado()) {
+                            // Ya existe activo: informar al usuario (se lanza excepción para que el menú la muestre)
+                            entityTransaction.rollback();
+                            throw new RuntimeException("No se puede insertar: ya existe un producto activo con el nombre '" + incoming.getNombre() + "'.");
+                        } else {
+                            // Restaurar y actualizar campos del existente
+                            existente.setEliminado(false);
+                            existente.setPrecio(incoming.getPrecio());
+                            existente.setDescripcion(incoming.getDescripcion());
+                            existente.setStock(incoming.getStock());
+                            existente.setImagen(incoming.getImagen());
+                            existente.setDisponible(incoming.getDisponible());
+
+                            // Asegurar que la categoría sea gestionada por el mismo EntityManager
+                            if (incoming.getCategoria() != null && incoming.getCategoria().getId() != null) {
+                                edu.utn.segundo_parcial.model.Categoria cat = entityManager.find(edu.utn.segundo_parcial.model.Categoria.class, incoming.getCategoria().getId());
+                                existente.setCategoria(cat);
+                            } else {
+                                existente.setCategoria(null);
+                            }
+
+                            edu.utn.segundo_parcial.model.Producto merged = entityManager.merge(existente);
+                            entityTransaction.commit();
+                            return (T) merged;
+                        }
+                    }
+                }
+            }
+
+            // Comportamiento genérico por defecto
+            T mergedEntity = entityManager.merge(entity);
             entityTransaction.commit();
             return mergedEntity;
 
+        } catch (RuntimeException e) {
+            if (entityTransaction != null && entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
+            throw e;
         } catch (Exception e) {
             if (entityTransaction != null && entityTransaction.isActive()) {
                 entityTransaction.rollback();

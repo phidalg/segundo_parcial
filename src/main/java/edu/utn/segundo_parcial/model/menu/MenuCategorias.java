@@ -154,6 +154,24 @@ public abstract class MenuCategorias extends Menu{
         }
     }
 
+    private static void listarCategorias() {
+        CategoriaRepository categoriaRepo = new CategoriaRepository();
+        try {
+            System.out.println("\n--- Listado de Categorías Activas ---");
+            java.util.List<Categoria> categorias = categoriaRepo.listarActivos();
+            if (categorias.isEmpty()) {
+                System.out.println("No hay categorías activas.");
+                return;
+            }
+            System.out.println();
+            for (Categoria c : categorias) {
+                System.out.println("ID: " + c.getId() + " | Nombre: " + c.getNombre() + (c.getDescripcion() != null ? " | " + c.getDescripcion() : ""));
+            }
+        } catch (Exception e) {
+            System.out.println("\nError al listar las categorías: " + e.getMessage());
+        }
+    }
+
     static void gestionarCategorias() {
         boolean volver = false;
 
@@ -169,7 +187,6 @@ public abstract class MenuCategorias extends Menu{
 
                 case 2: // Baja
                     bajaCategoria();
-
                     break;
 
                 case 3: // Modificación
@@ -177,19 +194,16 @@ public abstract class MenuCategorias extends Menu{
                     break;
 
                 case 4: // Lista
-
+                    listarCategorias();
                     break;
 
                 case 5: // Volver
-
                     volver = true;
                     break;
 
                 default:
-
                     System.out.println("Error, opción invalida en switch.");
                     break;
-
             }
         }
     }

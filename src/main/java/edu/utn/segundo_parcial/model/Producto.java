@@ -31,7 +31,7 @@ public class Producto extends Base{
     private String imagen;
     private Boolean disponible;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "categoria_id")
     @ToString.Exclude
     private Categoria categoria;
