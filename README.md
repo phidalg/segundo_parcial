@@ -15,6 +15,7 @@ Este proyecto consiste en una refactorización del sistema desarrollado en los T
 ## Links:
 
 Repositorio en GitHub: https://github.com/phidalg/segundo_parcial
+Video explicativo: https://drive.google.com/drive/folders/10WsJ5UgbKgAL3vrv79epG4FY3hkPHkBn?usp=sharing
 
 ## Menú en consola:
 
