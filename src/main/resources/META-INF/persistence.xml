@@ -12,11 +12,11 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <!-- Entidades -->
-        <class>com.utn.entities.Categoria</class>
-        <class>com.utn.entities.Producto</class>
-        <class>com.utn.entities.Pedido</class>
-        <class>com.utn.entities.DetallePedido</class>
-        <class>com.utn.entities.Usuario</class>
+        <class>edu.utn.segundo_parcial.model.Categoria</class>
+        <class>edu.utn.segundo_parcial.model.Producto</class>
+        <class>edu.utn.segundo_parcial.model.Pedido</class>
+        <class>edu.utn.segundo_parcial.model.DetallePedido</class>
+        <class>edu.utn.segundo_parcial.model.Usuario</class>
 
         <properties>
 
