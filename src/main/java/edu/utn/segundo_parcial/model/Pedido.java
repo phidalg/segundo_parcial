@@ -1,7 +1,8 @@
-package com.utn.entities;
+package edu.utn.segundo_parcial.model;
 
-import com.utn.enums.Estado;
-import com.utn.enums.FormaPago;
+
+import edu.utn.segundo_parcial.model.enums.Estado;
+import edu.utn.segundo_parcial.model.enums.FormaPago;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import java.time.LocalDate;

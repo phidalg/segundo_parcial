@@ -1,6 +1,6 @@
-package com.utn.entities;
+package edu.utn.segundo_parcial.model;
 
-import com.utn.enums.Rol;
+import edu.utn.segundo_parcial.model.enums.Rol;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import java.util.HashSet;

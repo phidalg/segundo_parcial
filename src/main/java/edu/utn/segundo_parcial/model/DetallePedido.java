@@ -1,4 +1,4 @@
-package com.utn.entities;
+package edu.utn.segundo_parcial.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
