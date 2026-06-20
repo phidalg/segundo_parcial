@@ -24,6 +24,7 @@ public abstract class MenuPrincipal extends Menu {
 
         while (!cerrar) {
             imprimirEncabezado();
+            System.out.println("\n                               > MENU PRINCIPAL <\n");
             opcionElegida = elegirOpcion((MENU_PRINCIPAL));
 
             switch (opcionElegida) {

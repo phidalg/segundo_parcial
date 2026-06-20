@@ -51,6 +51,109 @@ public abstract class MenuCategorias extends Menu{
         }
     }
 
+    private static void bajaCategoria() {
+        Scanner scanner = new Scanner(System.in);
+        CategoriaRepository categoriaRepo = new CategoriaRepository();
+        try {
+            System.out.println("\n--- Baja Lógica de Categoría ---");
+
+            java.util.List<Categoria> categorias = categoriaRepo.listarActivos();
+            if (categorias.isEmpty()) {
+                System.out.println("No hay categorías activas para eliminar.");
+                return;
+            }
+
+            System.out.println("\nCategorias activas:");
+            for (Categoria c : categorias) {
+                System.out.println("ID: " + c.getId() + " - Nombre: " + c.getNombre() + (c.getDescripcion() != null ? " - " + c.getDescripcion() : ""));
+            }
+
+            System.out.print("Ingrese el ID de la categoría a eliminar: ");
+            String input = scanner.nextLine().trim();
+
+            Long id;
+            try {
+                id = Long.parseLong(input);
+            } catch (NumberFormatException e) {
+                System.out.println("ID inválido.");
+                return;
+            }
+
+            boolean eliminado = categoriaRepo.eliminarLogico(id);
+            if (eliminado) {
+                System.out.println("\nCategoría eliminada lógicamente con éxito.");
+            } else {
+                System.out.println("\nNo se encontró la categoría con ID: " + id);
+            }
+
+        } catch (Exception e) {
+            System.out.println("\nError al eliminar la categoría: " + e.getMessage());
+        }
+    }
+
+    private static void modificarCategoria() {
+        Scanner scanner = new Scanner(System.in);
+        CategoriaRepository categoriaRepo = new CategoriaRepository();
+
+        try {
+            System.out.println("\n--- Modificación de Categoría ---");
+
+            java.util.List<Categoria> categorias = categoriaRepo.listarActivos();
+            if (categorias.isEmpty()) {
+                System.out.println("No hay categorías activas para modificar.");
+                return;
+            }
+
+            System.out.println("\nCategorias activas:");
+            for (Categoria c : categorias) {
+                System.out.println("ID: " + c.getId() + " - Nombre: " + c.getNombre() + (c.getDescripcion() != null ? " - " + c.getDescripcion() : ""));
+            }
+
+            System.out.print("Ingrese el ID de la categoría a modificar: ");
+            String input = scanner.nextLine().trim();
+
+            Long id;
+            try {
+                id = Long.parseLong(input);
+            } catch (NumberFormatException e) {
+                System.out.println("ID inválido.");
+                return;
+            }
+
+            java.util.Optional<Categoria> optionalCategoria = categoriaRepo.buscarPorId(id);
+            if (!optionalCategoria.isPresent()) {
+                System.out.println("\nNo se encontró la categoría con ID: " + id);
+                return;
+            }
+
+            Categoria categoria = optionalCategoria.get();
+
+            System.out.println("Nombre actual: " + categoria.getNombre());
+            System.out.print("Ingrese nuevo nombre (enter para mantener): ");
+            String nuevoNombre = scanner.nextLine().trim();
+            if (!nuevoNombre.isEmpty()) {
+                categoria.setNombre(nuevoNombre);
+            }
+
+            System.out.println("Descripción actual: " + (categoria.getDescripcion() == null ? "" : categoria.getDescripcion()));
+            System.out.print("Ingrese nueva descripción (enter para mantener, - para borrar): ");
+            String nuevaDescRaw = scanner.nextLine();
+            String nuevaDesc = nuevaDescRaw == null ? "" : nuevaDescRaw.trim();
+
+            if ("-".equals(nuevaDescRaw)) {
+                categoria.setDescripcion(null);
+            } else if (!nuevaDesc.isEmpty()) {
+                categoria.setDescripcion(nuevaDesc);
+            }
+
+            Categoria guardada = categoriaRepo.guardar(categoria);
+            System.out.println("\nCategoría modificada exitosamente. ID: " + guardada.getId());
+
+        } catch (Exception e) {
+            System.out.println("\nError al modificar la categoría: " + e.getMessage());
+        }
+    }
+
     static void gestionarCategorias() {
         boolean volver = false;
 
@@ -65,11 +168,12 @@ public abstract class MenuCategorias extends Menu{
                     break;
 
                 case 2: // Baja
+                    bajaCategoria();
 
                     break;
 
                 case 3: // Modificación
-
+                    modificarCategoria();
                     break;
 
                 case 4: // Lista
