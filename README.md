@@ -16,6 +16,14 @@ Este proyecto consiste en una refactorización del sistema desarrollado en los T
 
 Repositorio en GitHub: https://github.com/phidalg/segundo_parcial
 
+## Menú en consola:
+
+Desde el menú interactivo se pueden realizar operaciones ABM sobre las entidades producto y categoría. Además, se pueden generar reportes.
+
+## Base de datos H2
+
+La primera vez que se ejecute el proyecto, se creará automáticamente la base de datos en el directorio /data.
+
 ## Lombok:
 
 Este proyecto utiliza la librería Lombok para reducir el código repetitivo en las entidades mediante el uso de anotaciones, mejorando la legibilidad y mantenibilidad del código.
